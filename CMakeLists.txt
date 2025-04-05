@@ -6,7 +6,7 @@ elseif (DEFINED ENV{METAMODULE_SDK_DIR})
     set(METAMODULE_SDK_DIR "$ENV{METAMODULE_SDK_DIR}")
 	message("METAMODULE_SDK_DIR set by environment variable ${METAMODULE_SDK_DIR}")
 else()
-    set(METAMODULE_SDK_DIR "${CMAKE_CURRENT_LIST_DIR}/../../metamodule/metamodule-plugin-sdk")
+    set(METAMODULE_SDK_DIR "${CMAKE_CURRENT_LIST_DIR}/../metamodule-plugin-sdk")
 	message("METAMODULE_SDK_DIR set to default: ${METAMODULE_SDK_DIR}")
 endif()
 include(${METAMODULE_SDK_DIR}/plugin.cmake)
@@ -69,11 +69,16 @@ file(GLOB_RECURSE VIA_SOURCES
     "${SOURCE_DIR}/src/*.cpp"
 )
 
+set(LIBC_SOURCES
+     ${METAMODULE_SDK_DIR}/metamodule-plugin-libc/newlib/libc/ctype/jp2uc.c
+)
+
 target_sources(Starling_Via PRIVATE
     ${VIA_SOURCES}
     ${MODULE_SOURCES}
     ${UI_SOURCES}
     ${IO_SOURCES}
+    ${LIBC_SOURCES}
 )
 
 # Include directories
@@ -85,7 +90,7 @@ target_include_directories(Starling_Via PRIVATE
     ${SOURCE_DIR}/src/dep/starling-rack-ui
     ${SOURCE_DIR}/src/dep/starling-dsp
     ${SOURCE_DIR}/Via/modules
-    ${METAMODULE_SDK_DIR}/metamodule-plugin-libc/newlib/libc/ctype/jp2uc.c
+    ${METAMODULE_SDK_DIR}/metamodule-plugin-libc/newlib/libc/ctype
 )
 
 # Create the plugin
