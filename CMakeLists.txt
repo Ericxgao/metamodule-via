@@ -11,7 +11,7 @@ else()
 endif()
 include(${METAMODULE_SDK_DIR}/plugin.cmake)
 
-project(Via VERSION 1.0.0 DESCRIPTION "Via for Rack" LANGUAGES C CXX)
+project(Starling_Via VERSION 1.0.0 DESCRIPTION "Via for Rack" LANGUAGES C CXX)
 
 # Set C++17 standard
 set(CMAKE_CXX_STANDARD 20)
@@ -25,10 +25,10 @@ option(BUILD_VIRTUAL "Build for virtual environment" ON)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Via-for-Rack)
 
 # Main library target
-add_library(Via STATIC)
+add_library(Starling_Via STATIC)
 
 # Compiler definitions
-target_compile_definitions(Via PRIVATE 
+target_compile_definitions(Starling_Via PRIVATE 
     __V1x 
     __PLUGIN
     $<$<BOOL:${BUILD_VIRTUAL}>:BUILD_VIRTUAL>
@@ -36,7 +36,7 @@ target_compile_definitions(Via PRIVATE
 )
 
 # Compiler options
-target_compile_options(Via PRIVATE
+target_compile_options(Starling_Via PRIVATE
     -fpermissive
     -fdata-sections
     -ffunction-sections
@@ -48,7 +48,7 @@ target_compile_options(Via PRIVATE
 )
 
 # Linker options
-target_link_options(Via PRIVATE
+target_link_options(Starling_Via PRIVATE
     -Wl,--gc-sections
 )
 
@@ -74,7 +74,7 @@ set(LIBC_SOURCES
     ${METAMODULE_SDK_DIR}/metamodule-plugin-libc/newlib/libc/ctype/jp2uc.c
 )
 
-target_sources(Via PRIVATE
+target_sources(Starling_Via PRIVATE
     ${VIA_SOURCES}
     ${MODULE_SOURCES}
     ${UI_SOURCES}
@@ -83,7 +83,7 @@ target_sources(Via PRIVATE
 )
 
 # Include directories
-target_include_directories(Via PRIVATE 
+target_include_directories(Starling_Via PRIVATE 
     ${SOURCE_DIR}/src
     ${SOURCE_DIR}/Via/modules/inc
     ${SOURCE_DIR}/Via/ui/inc
@@ -96,9 +96,8 @@ target_include_directories(Via PRIVATE
 
 # Create the plugin
 create_plugin(
-    SOURCE_LIB      Via
-    PLUGIN_NAME     Via
+    SOURCE_LIB      Starling_Via
+    PLUGIN_NAME     Starling_Via
     PLUGIN_JSON     ${SOURCE_DIR}/plugin.json
     SOURCE_ASSETS   ${CMAKE_CURRENT_LIST_DIR}/assets
     DESTINATION     ${CMAKE_CURRENT_LIST_DIR}/metamodule-plugins
-) 
