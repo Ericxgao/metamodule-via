@@ -69,17 +69,11 @@ file(GLOB_RECURSE VIA_SOURCES
     "${SOURCE_DIR}/src/*.cpp"
 )
 
-# Add custom libc implementations
-set(LIBC_SOURCES
-    ${METAMODULE_SDK_DIR}/metamodule-plugin-libc/newlib/libc/ctype/jp2uc.c
-)
-
 target_sources(Starling_Via PRIVATE
     ${VIA_SOURCES}
     ${MODULE_SOURCES}
     ${UI_SOURCES}
     ${IO_SOURCES}
-    ${LIBC_SOURCES}
 )
 
 # Include directories
@@ -101,3 +95,4 @@ create_plugin(
     PLUGIN_JSON     ${SOURCE_DIR}/plugin.json
     SOURCE_ASSETS   ${CMAKE_CURRENT_LIST_DIR}/assets
     DESTINATION     ${CMAKE_CURRENT_LIST_DIR}/metamodule-plugins
+) 
