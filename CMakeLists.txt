@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.24)
 
-if (DEFINED ENV{METAMODULE_SDK_DIR})
+if(NOT "${METAMODULE_SDK_DIR}" STREQUAL "")
+	message("METAMODULE_SDK_DIR set by CMake variable ${METAMODULE_SDK_DIR}")
+elseif (DEFINED ENV{METAMODULE_SDK_DIR})
     set(METAMODULE_SDK_DIR "$ENV{METAMODULE_SDK_DIR}")
-elseif("${METAMODULE_SDK_DIR}" STREQUAL "")
-    set(METAMODULE_SDK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../metamodule-plugin-sdk")
+	message("METAMODULE_SDK_DIR set by environment variable ${METAMODULE_SDK_DIR}")
+else()
+    set(METAMODULE_SDK_DIR "${CMAKE_CURRENT_LIST_DIR}/../../metamodule/metamodule-plugin-sdk")
+	message("METAMODULE_SDK_DIR set to default: ${METAMODULE_SDK_DIR}")
 endif()
 include(${METAMODULE_SDK_DIR}/plugin.cmake)
 
-project(Via VERSION 1.0.0 DESCRIPTION "Via for Rack" LANGUAGES C CXX)
+project(Starling_Via VERSION 1.0.0 DESCRIPTION "Via for Rack" LANGUAGES C CXX)
 
 # Set C++17 standard
 set(CMAKE_CXX_STANDARD 20)
@@ -21,10 +25,10 @@ option(BUILD_VIRTUAL "Build for virtual environment" ON)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Via-for-Rack)
 
 # Main library target
-add_library(Via STATIC)
+add_library(Starling_Via STATIC)
 
 # Compiler definitions
-target_compile_definitions(Via PRIVATE 
+target_compile_definitions(Starling_Via PRIVATE 
     __V1x 
     __PLUGIN
     $<$<BOOL:${BUILD_VIRTUAL}>:BUILD_VIRTUAL>
@@ -32,7 +36,7 @@ target_compile_definitions(Via PRIVATE
 )
 
 # Compiler options
-target_compile_options(Via PRIVATE
+target_compile_options(Starling_Via PRIVATE
     -fpermissive
     -fdata-sections
     -ffunction-sections
@@ -44,7 +48,7 @@ target_compile_options(Via PRIVATE
 )
 
 # Linker options
-target_link_options(Via PRIVATE
+target_link_options(Starling_Via PRIVATE
     -Wl,--gc-sections
 )
 
@@ -65,21 +69,15 @@ file(GLOB_RECURSE VIA_SOURCES
     "${SOURCE_DIR}/src/*.cpp"
 )
 
-# Add custom libc implementations
-set(LIBC_SOURCES
-    ${METAMODULE_SDK_DIR}/metamodule-plugin-libc/newlib/libc/ctype/jp2uc.c
-)
-
-target_sources(Via PRIVATE
+target_sources(Starling_Via PRIVATE
     ${VIA_SOURCES}
     ${MODULE_SOURCES}
     ${UI_SOURCES}
     ${IO_SOURCES}
-    ${LIBC_SOURCES}
 )
 
 # Include directories
-target_include_directories(Via PRIVATE 
+target_include_directories(Starling_Via PRIVATE 
     ${SOURCE_DIR}/src
     ${SOURCE_DIR}/Via/modules/inc
     ${SOURCE_DIR}/Via/ui/inc
@@ -92,8 +90,8 @@ target_include_directories(Via PRIVATE
 
 # Create the plugin
 create_plugin(
-    SOURCE_LIB      Via
-    PLUGIN_NAME     Via
+    SOURCE_LIB      Starling_Via
+    PLUGIN_NAME     Starling_Via
     PLUGIN_JSON     ${SOURCE_DIR}/plugin.json
     SOURCE_ASSETS   ${CMAKE_CURRENT_LIST_DIR}/assets
     DESTINATION     ${CMAKE_CURRENT_LIST_DIR}/metamodule-plugins
